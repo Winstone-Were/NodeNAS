@@ -1,6 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 const multer = require("multer");
+const fs = require("fs");
 
 const App = express();
 App.use(cors());
@@ -21,6 +22,18 @@ App.post('/upload', upload.single("file"),(req,res)=>{
     console.log(req.file);
     return res.send("Single File");
 });
+
+App.get('/AllFiles', (req,res)=>{
+    fs.readdir(__dirname+'/uploads',(err,result)=>{
+        if(err){
+            console.error(err);
+        }
+
+        console.log(result);
+
+        res.send(result);
+    })
+})
 
 App.get('/',(req,res)=>{
     res.sendFile(__dirname+'/Frontend/index.html');
